@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class RequestUrls {
-    private List<String> urls;
+    private String url;
 }

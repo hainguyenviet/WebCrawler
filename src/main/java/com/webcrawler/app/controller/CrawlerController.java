@@ -23,9 +23,9 @@ public class CrawlerController {
     WebCrawlerService crawlerService;
 
     @PostMapping("/ingest")
-    public ResponseEntity ingestUrls(@RequestBody RequestUrls urls_list) {
+    public ResponseEntity ingestUrls(@RequestBody List<RequestUrls> urls_list) {
         try {
-            crawlerService.ingestUrls(urls_list.getUrls());
+            crawlerService.ingestUrls(urls_list);
             return ResponseEntity.ok("Ingest Urls ok");
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -1,5 +1,6 @@
 package com.webcrawler.app.service;
 
+import com.webcrawler.app.entity.RequestUrls;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,11 +19,11 @@ public class WebCrawlerService {
         dataCrawlers = new HashMap<String, Document>();
     }
 
-    public void ingestUrls(List<String> Urls) throws IOException {
-        for (String url: Urls) {
-            if(!dataCrawlers.containsKey(url)) {
-                Document document = Jsoup.connect(url).get();
-                dataCrawlers.put(url, document);
+    public void ingestUrls(List<RequestUrls> urls_list) throws IOException {
+        for (RequestUrls url: urls_list) {
+            if(!dataCrawlers.containsKey(url.getUrl())) {
+                Document document = Jsoup.connect(url.getUrl()).get();
+                dataCrawlers.put(url.getUrl(), document);
             }
         }
     }
