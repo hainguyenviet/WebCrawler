@@ -30,29 +30,34 @@ public class WebCrawlerService {
 
     public Map<String, Document> findDocumentContainText(String text) {
         Map<String, Document> findText = dataCrawlers.entrySet().stream().filter(e ->
-                e.getValue().select(":containsOwn("+text+")") != null)
+                e.getValue().select(":containsOwn("+text+")").size() > 0)
                 .collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue()));
         return findText;
     }
 
-//    public static void main(String[] args) throws IOException {
-//        //1. Pick a URL from the frontier
-//        List<String> ingestUrls = new ArrayList<String>();
-//        ingestUrls.add("https://www.google.com");
-//        ingestUrls.add("https://www.bing.com");
-//        ingestUrls.add("https://search.yahoo.com/");
-//
-//        WebCrawlerService webCrawlerService = new WebCrawlerService();
-//        webCrawlerService.ingestUrls(ingestUrls);
-//        Map<Object, Document> findText = webCrawlerService.findDocumentContainText("http");
-//        findText.entrySet().stream().forEach(e -> {
-//            Elements elements =  e.getValue().select(":containsOwn(http)");
-//            System.out.println("Url:"+e.getKey());
-//            elements.forEach(element -> {
-//                System.out.println(element.html());
-//            });
-//        });
-//
-//    }
+    public static void main(String[] args) throws IOException {
+        //1. Pick a URL from the frontier
+        List<RequestUrls> ingestUrls = new ArrayList<RequestUrls>();
+        RequestUrls g =new RequestUrls();g.setUrl("https://www.google.com");
+        RequestUrls b =new RequestUrls();b.setUrl("https://www.bing.com");
+        RequestUrls y =new RequestUrls();y.setUrl("https://search.yahoo.com/");
+        ingestUrls.add(b);
+        ingestUrls.add(g);
+        ingestUrls.add(y);
+
+        WebCrawlerService webCrawlerService = new WebCrawlerService();
+        webCrawlerService.ingestUrls(ingestUrls);
+        Map<String, Document> findText = webCrawlerService.findDocumentContainText("google");
+        findText.entrySet().stream().forEach(e -> {
+            Elements elements =  e.getValue().select(":containsOwn(google)");
+                System.out.println("Url:"+e.getKey());
+                elements.forEach(element -> {
+                    System.out.println(element.html());
+                });
+
+
+        });
+
+    }
 
 }

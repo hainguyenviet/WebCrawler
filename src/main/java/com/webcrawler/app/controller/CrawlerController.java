@@ -1,5 +1,6 @@
 package com.webcrawler.app.controller;
 
+import com.webcrawler.app.entity.RequestTextFind;
 import com.webcrawler.app.entity.RequestUrls;
 import com.webcrawler.app.entity.ResponseText;
 import com.webcrawler.app.service.WebCrawlerService;
@@ -34,12 +35,11 @@ public class CrawlerController {
     }
 
     @PostMapping("/findText")
-    public ResponseEntity findText(@RequestBody String textFind) {
-        Map<String, Document> findText = crawlerService.findDocumentContainText(textFind);
+    public ResponseEntity findText(@RequestBody RequestTextFind textFind) {
+        Map<String, Document> findText = crawlerService.findDocumentContainText(textFind.getText());
         List<ResponseText> response= findText.entrySet().stream()
-                .filter(e -> e.getValue().select(":containsOwn("+textFind+")").size() > 0)
                 .map(e -> {
-                    Elements elements = e.getValue().select(":containsOwn("+textFind+")");
+                    Elements elements = e.getValue().select(":containsOwn("+textFind.getText()+")");
                     List<String> elementContain = elements.stream().map(el -> el.html()).collect(Collectors.toList());
                     return new ResponseText(e.getKey(), elementContain);
                 }).collect(Collectors.toList());
